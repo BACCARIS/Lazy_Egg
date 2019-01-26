@@ -1,14 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include "Movable.h"
 
-class Chopstick : public Entity
+class Chopstick : public Movable
 {
 public:
-	Chopstick(sf::Vector2u size, float posX, float posY);
+	Chopstick(sf::Vector2u size, float posX, float posY, float speed);
 	~Chopstick();
 
-	void Move(sf::Vector2u size, float speed);
+	void Move(sf::Vector2u size);
 
 private:
 	float originalPosX, originalPosY;

@@ -1,13 +1,12 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 #include "Movable.h"
 
-class Spoon : public Movable
+class Bacon : public Movable
 {
 public:
-	Spoon(sf::Vector2u size, float posX, float posY, float speed);
-	~Spoon();
+	Bacon(sf::Vector2u sizeWindow,  sf::Vector2f size, float posX, float posY, float speed);
+	~Bacon();
 
 	void Move(sf::Vector2u size);
 

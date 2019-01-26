@@ -13,5 +13,4 @@ public:
 
 protected:
 	sf::RectangleShape shape;
-
 };

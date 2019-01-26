@@ -12,7 +12,7 @@ projet: $(OBJ)
 
 main.o: *.h
 
-%.o: %.cc
+%.o: %.cpp
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 .PHONY: clean mrproper

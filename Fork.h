@@ -3,11 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "Movable.h"
 
-class Spoon : public Movable
+class Fork : public Movable
 {
 public:
-	Spoon(sf::Vector2u size, float posX, float posY, float speed);
-	~Spoon();
+	Fork(sf::Vector2u size, float posX, float posY, float speed);
+	~Fork();
 
 	void Move(sf::Vector2u size);
 

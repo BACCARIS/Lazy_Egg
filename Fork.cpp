@@ -1,32 +1,34 @@
-#include "Spoon.h"
+#include "Fork.h"
 #include <iostream>
 
 
 
-Spoon::Spoon(sf::Vector2u size, float posX, float posY, float speed)
+Fork::Fork(sf::Vector2u size, float posX, float posY, float speed)
 {
-	if (!texture.loadFromFile("sprite/spoon.png"))
+	if (!texture.loadFromFile("sprite/fork2.png"))
 	{
-		std::cout<<"Image Spoon not found"<<std::endl;
+		std::cout<<"Image Fork not found"<<std::endl;
 	}
 	shape.setTexture(&texture);
-	shape.scale(sf::Vector2f(-1, 1));
+	shape.setFillColor(sf::Color(202, 96, 63));
 	shape.setSize(sf::Vector2f(60, 40));
 	shape.setPosition(sf::Vector2f(posX, posY));
 
 	originalPosX = posX;
 	originalPosY = posY;
 	this->speed = speed;
+
 }
 
 
-Spoon::~Spoon()
+Fork::~Fork()
 {
 }
 
 
-void Spoon::Move(sf::Vector2u size)
+void Fork::Move(sf::Vector2u size)
 {
+
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > size.x)
