@@ -3,7 +3,6 @@
 #include "Egg.h"
 
 
-
 Egg::Egg(sf::Vector2u size)
 {
 

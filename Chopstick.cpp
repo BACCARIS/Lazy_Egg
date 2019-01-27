@@ -10,7 +10,7 @@ Chopstick::Chopstick(sf::Vector2u size, float posX, float posY)
 		std::cout<<"Image Chopstick not found"<<std::endl;
 	}
 	shape.setTexture(&texture);
-	shape.setSize(sf::Vector2f(50, 60));
+	shape.setSize(sf::Vector2f(60, 50));
 	shape.setPosition(sf::Vector2f(posX, posY));
 
 	originalPosX = posX;

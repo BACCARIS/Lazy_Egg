@@ -8,7 +8,7 @@ Game::Game()
 
 	egg = new Egg(window->getSize());
 	bed = new Bed(window->getSize());
-	toastFinal = new Toast(window->getSize(), sf::Vector2f(TOAST_FINAL_SIZE_X, TOAST_FINAL_SIZE_Y), TOAST_FINAL_POS_X, TOAST_FINAL_POS_Y);
+	baconFinal = new Bacon(window->getSize(), sf::Vector2f(BACON_FINAL_SIZE_X, BACON_FINAL_SIZE_Y), BACON_FINAL_POS_X, BACON_FINAL_POS_Y);
 
 	for(int i=0; i<4; i++)
 	{
@@ -17,20 +17,24 @@ Game::Game()
 		spoons.push_back(spoon);
 		Chopstick* chopstick = new Chopstick(window->getSize(), i * 250, CHOPSTICK_POS_Y);
 		chopsticks.push_back(chopstick);
-		Fork* fork = new Fork(window->getSize(), i * 250, FORK1_POS_Y);
-		forks.push_back(fork);
-		fork = new Fork(window->getSize(), i * 250, FORK2_POS_Y);
-		forks2.push_back(fork);
 
-		//toast/bacon
-		Toast* toast = new Toast(window->getSize(), sf::Vector2f(TOAST1_SIZE_X, TOAST1_SIZE_Y), i * 250, TOAST1_POS_Y);
-		toasts.push_back(toast);
-		Bacon* bacon = new Bacon(window->getSize(),  sf::Vector2f(BACON1_SIZE_X, BACON1_SIZE_Y), i * 250, BACON1_POS_Y);
-		bacons.push_back(bacon);
-		toast = new Toast(window->getSize(), sf::Vector2f(TOAST2_SIZE_X, TOAST2_SIZE_Y), i * 650, TOAST2_POS_Y);
-		toasts2.push_back(toast);
-		bacon = new Bacon(window->getSize(), sf::Vector2f(BACON2_SIZE_X, BACON2_SIZE_Y),  i * 100, BACON2_POS_Y);
-		bacons2.push_back(bacon);
+		//Forks
+		std::pair<Fork*, Fork*> pairFork;
+		pairFork.first = new Fork(window->getSize(), i * 250, FORK1_POS_Y);;
+		pairFork.second = new Fork(window->getSize(), i * 250, FORK2_POS_Y);
+		forks.push_back(pairFork);
+
+		//Toasts
+		std::pair<Toast*, Toast*> pairToast;
+		pairToast.first = new Toast(window->getSize(), sf::Vector2f(TOAST1_SIZE_X, TOAST1_SIZE_Y), i * 250, TOAST1_POS_Y);
+		pairToast.second = new Toast(window->getSize(), sf::Vector2f(TOAST2_SIZE_X, TOAST2_SIZE_Y), i * 350, TOAST2_POS_Y);
+		toasts.push_back(pairToast);
+
+		//Bacons
+		std::pair<Bacon*, Bacon*> pairBacon;
+		pairBacon.first = new Bacon(window->getSize(),  sf::Vector2f(BACON1_SIZE_X, BACON1_SIZE_Y), i * 250, BACON1_POS_Y);
+		pairBacon.second = new Bacon(window->getSize(), sf::Vector2f(BACON2_SIZE_X, BACON2_SIZE_Y),  i * 200, BACON2_POS_Y);
+		bacons.push_back(pairBacon);
 	}
 
 	for(int i=0; i< (int)egg->getLife()/1000+1; i++)
@@ -67,26 +71,25 @@ Game::~Game()
 	delete window;
 	delete egg;
 	delete bed;
-	delete toastFinal;
+	delete baconFinal;
 	for(int i = 0; i<4; i++)
 	{
 		delete chopsticks[i];
 		delete spoons[i];
-		delete forks[i];
-		delete forks2[i];
-		delete toasts[i];
-		delete toasts2[i];
-		delete bacons[i];
-		delete bacons2[i];
-
+		delete forks[i].first;
+		delete forks[i].second;
+		delete toasts[i].first;
+		delete toasts[i].second;
+		delete bacons[i].first;
+		delete bacons[i].second;
+		delete lives[i];
 	}
 
 }
 
-
-
 void Game::Loop()
 {
+	if(!Menu()) window ->close();
 	bool touched = false;
 
 	while (window->isOpen())
@@ -113,14 +116,66 @@ void Game::Loop()
 			sound.stop();
 			egg->setPosition(sf::Vector2f(500, 650));
 		}
-
 		touched = false;
 
 		Draw();
 	}
 }
 
+bool Game::Menu()
+{
+	sf::Texture textureStart;
+	sf::Texture textureQuit;
+	sf::Sprite background;
+	bool choice = true;
+	bool enter = false;
 
+	if (!textureStart.loadFromFile("sprite/menuStart.png"))
+	{
+		std::cout<<"Image menuStart not found"<<std::endl;
+	}
+	if (!textureQuit.loadFromFile("sprite/menuQuit.png"))
+	{
+		std::cout<<"Image menuQuit not found"<<std::endl;
+	}
+
+	window->clear(sf::Color::Black);
+	background.setTexture(textureStart);
+	background.setPosition(0, 0);
+	sf::Event event;
+	window->draw(background);
+	window->display();
+
+	while(!enter)
+	{
+		while(window->pollEvent(event))
+		{
+			if(sf::Keyboard::Left == event.key.code)
+			{
+				background.setTexture(textureStart);
+				window->clear();
+				window->draw(background);
+				window->display();
+				choice = true;
+			}
+			else if(sf::Keyboard::Right == event.key.code)
+			{
+				background.setTexture(textureQuit);
+				window->clear();
+				window->draw(background);
+				window->display();
+				choice = false;
+			}
+			else if(sf::Keyboard::Return == event.key.code)
+			{
+				enter = true;
+			}
+		}
+	}
+	window->draw(background);
+	window->display();
+	return choice;
+}
 
 void Game::GameOver()
 {
@@ -141,8 +196,7 @@ void Game::GameOver()
 
 
 	gudetamaSad.setTexture(texture);
-	gudetamaSad.setScale(sf::Vector2f(0.6, 0.6));
-	gudetamaSad.setPosition(sf::Vector2f(300, 250));
+	gudetamaSad.setPosition(sf::Vector2f(200, 200));
 	window -> draw(gudetamaSad);
 
 
@@ -152,7 +206,7 @@ void Game::GameOver()
 	sf::Sound sound;
 	sound.setBuffer(bufferGameOver);
 	sound.play();
-	std::this_thread::sleep_for (std::chrono::seconds(4));
+	std::this_thread::sleep_for (std::chrono::seconds(3));
 	sound.stop();
 	window->close();
 }
@@ -190,14 +244,14 @@ void Game::drawContent()
 	{
 		spoons[i]->Draw(*window);
 		chopsticks[i]->Draw(*window);
-		bacons[i]->Draw(*window);
-		forks[i]->Draw(*window);
-		forks2[i]->Draw(*window);
-		toasts[i]->Draw(*window);
-		toasts2[i]->Draw(*window);
-		bacons2[i]->Draw(*window);
+		forks[i].first->Draw(*window);
+		forks[i].second->Draw(*window);
+		toasts[i].first->Draw(*window);
+		toasts[i].second->Draw(*window);
+		bacons[i].first->Draw(*window);
+		bacons[i].second->Draw(*window);
 	}
-	toastFinal->Draw(*window);
+	baconFinal->Draw(*window);
 	bed->Draw(*window);
 	egg->Draw(*window);
 }
@@ -209,15 +263,14 @@ void Game::Move()
 	{
 		spoons[i]->Move(window->getSize(), SPOON_SPEED);
 		chopsticks[i]->Move(window->getSize(),  CHOPSTICK_SPEED);
-		forks[i]->Move(window->getSize(), FORK1_SPEED);
-		forks2[i]->Move(window->getSize(), FORK2_SPEED);
-		bacons[i]->Move(window->getSize(), BACON1_SPEED);
-		toasts[i]->Move(window->getSize(), TOAST1_SPEED);
-
-		bacons2[i]->Move(window->getSize(), BACON2_SPEED);
-		toasts2[i]->Move(window->getSize(), TOAST2_SPEED);
+		forks[i].first->Move(window->getSize(), FORK1_SPEED);
+		forks[i].second->Move(window->getSize(), FORK2_SPEED);
+		bacons[i].first->Move(window->getSize(), BACON1_SPEED);
+		toasts[i].first->Move(window->getSize(), TOAST1_SPEED);
+		bacons[i].second->Move(window->getSize(), BACON2_SPEED);
+		toasts[i].second->Move(window->getSize(), TOAST2_SPEED);
 	}
-	toastFinal->Move(window->getSize(), TOAST_FINAL_SPEED);
+	baconFinal->Move(window->getSize(), BACON_FINAL_SPEED);
 }
 
 //move egg if keyboard event
@@ -251,10 +304,10 @@ bool Game::isTouched()
 {
 	if(isCollision()) return true;
 
-	if(moveEgg()) return false;
+	else if(moveEgg()) return false;
 
 	//si on est en haut de la fenêtre on ne peut pas toucher le sol
-	if(egg->GetShape().getPosition().y < 400 && isOnFloor())
+	else if(egg->GetShape().getPosition().y < 400 && isOnFloor())
 		{
 			return true;
 		}
@@ -269,8 +322,8 @@ bool Game::isCollision()
 	{
 		if (egg->GetShape().getGlobalBounds().intersects(spoons[i]->GetShape().getGlobalBounds()) ||
 				egg->GetShape().getGlobalBounds().intersects(chopsticks[i]->GetShape().getGlobalBounds()) ||
-				egg->GetShape().getGlobalBounds().intersects(forks[i]->GetShape().getGlobalBounds()) ||
-				egg->GetShape().getGlobalBounds().intersects(forks2[i]->GetShape().getGlobalBounds()))
+				egg->GetShape().getGlobalBounds().intersects(forks[i].first->GetShape().getGlobalBounds()) ||
+				egg->GetShape().getGlobalBounds().intersects(forks[i].second->GetShape().getGlobalBounds()))
 		{
 			return true;
 		}
@@ -284,29 +337,29 @@ bool Game::moveEgg()
 {
 	for(int i=0; i<4; i++)
 	{
-		if (egg->GetShape().getGlobalBounds().intersects(bacons[i]->GetShape().getGlobalBounds()))
+		if (egg->GetShape().getGlobalBounds().intersects(bacons[i].first->GetShape().getGlobalBounds()))
 		{
-			 egg->Move(window->getSize(), bacons[i]->getSpeed());
+			 egg->Move(window->getSize(), bacons[i].first->getSpeed());
 			 return true;
 		}
-		else if (egg->GetShape().getGlobalBounds().intersects(toasts[i]->GetShape().getGlobalBounds()))
+		else if (egg->GetShape().getGlobalBounds().intersects(toasts[i].first->GetShape().getGlobalBounds()))
 		{
-			 egg->Move(window->getSize(), toasts[i]->getSpeed());
+			 egg->Move(window->getSize(), toasts[i].first->getSpeed());
 			 return true;
 		}
-		else if (egg->GetShape().getGlobalBounds().intersects(bacons2[i]->GetShape().getGlobalBounds()))
+		else if (egg->GetShape().getGlobalBounds().intersects(bacons[i].second->GetShape().getGlobalBounds()))
 		{
-			 egg->Move(window->getSize(), bacons2[i]->getSpeed());
+			 egg->Move(window->getSize(), bacons[i].second->getSpeed());
 			 return true;
 		}
-		else if (egg->GetShape().getGlobalBounds().intersects(toasts2[i]->GetShape().getGlobalBounds()))
+		else if (egg->GetShape().getGlobalBounds().intersects(toasts[i].second->GetShape().getGlobalBounds()))
 		{
-			 egg->Move(window->getSize(), toasts2[i]->getSpeed());
+			 egg->Move(window->getSize(), toasts[i].second->getSpeed());
 			 return true;
 		}
-		else if (egg->GetShape().getGlobalBounds().intersects(toastFinal->GetShape().getGlobalBounds()))
+		else if (egg->GetShape().getGlobalBounds().intersects(baconFinal->GetShape().getGlobalBounds()))
 		{
-			 egg->Move(window->getSize(), toastFinal->getSpeed());
+			 egg->Move(window->getSize(), baconFinal->getSpeed());
 			 return true;
 		}
 	}
@@ -320,14 +373,14 @@ bool Game::isOnFloor()
 	bool isOnComposant = false;
 	for(int i = 0; i<4; i++)
 	{
-		isOnComposant = egg->GetShape().getGlobalBounds().intersects(bacons[i]->GetShape().getGlobalBounds()) ||
-									egg->GetShape().getGlobalBounds().intersects(toasts[i]->GetShape().getGlobalBounds()) ||
-									egg->GetShape().getGlobalBounds().intersects(bacons2[i]->GetShape().getGlobalBounds()) ||
-									egg->GetShape().getGlobalBounds().intersects(toasts2[i]->GetShape().getGlobalBounds()) ||
+		isOnComposant = egg->GetShape().getGlobalBounds().intersects(bacons[i].first->GetShape().getGlobalBounds()) ||
+									egg->GetShape().getGlobalBounds().intersects(toasts[i].first->GetShape().getGlobalBounds()) ||
+									egg->GetShape().getGlobalBounds().intersects(bacons[i].second->GetShape().getGlobalBounds()) ||
+									egg->GetShape().getGlobalBounds().intersects(toasts[i].second->GetShape().getGlobalBounds()) ||
 									isOnComposant;
 	}
 
-	isOnComposant = egg->GetShape().getGlobalBounds().intersects(toastFinal->GetShape().getGlobalBounds()) ||
+	isOnComposant = egg->GetShape().getGlobalBounds().intersects(baconFinal->GetShape().getGlobalBounds()) ||
 								isOnComposant;
 
 	//si il n'y a collision avec aucun composant -> egg touche le sol
@@ -352,11 +405,9 @@ void Game::Win()
 	sf::Texture texture;
 	sf::Sprite gudetamaSleeping;
 
-
 	sf::Sound sound;
 	sound.setBuffer(bufferWin);
 	sound.play();
-
 
 	if (!texture.loadFromFile("sprite/gudetama_sleeping.png"))
 	{
@@ -368,7 +419,6 @@ void Game::Win()
 	count_life.setColor(sf::Color::Black);
 	count_life.setStyle(sf::Text::Bold);
 	count_life.setPosition(400,200);
-
 
 	gudetamaSleeping.setTexture(texture);
 	gudetamaSleeping.setScale(sf::Vector2f(0.6, 0.6));
