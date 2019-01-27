@@ -12,5 +12,4 @@ public:
 	void Move(sf::Vector2u size);
 
 private:
-	sf::Texture texture;
 };
