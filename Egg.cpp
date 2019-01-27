@@ -23,10 +23,16 @@ Egg::~Egg()
 {
 }
 
+void Egg::setPosition(sf::Vector2f position)
+{
+	shape.setPosition(position);
+}
+
 void Egg::Move(sf::Vector2u size, float speed)
 {
 	this->speed = speed;
-	shape.move(speed, 0);
+	  if(shape.getPosition().x > 0 && shape.getPosition().x < size.x) shape.move(speed, 0);
+
 }
 
 
@@ -38,7 +44,7 @@ void Egg::Move(sf::Event event, sf::Vector2u size)
 	}
 	else if (sf::Keyboard::Right == event.key.code)
 	{
-        if(shape.getPosition().x < size.x) shape.move(50, 0);
+        if(shape.getPosition().x < size.x) shape.move(40, 0);
 	}
 	else if (sf::Keyboard::Up == event.key.code)
 	{

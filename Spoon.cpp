@@ -3,7 +3,7 @@
 
 
 
-Spoon::Spoon(sf::Vector2u size, float posX, float posY, float speed)
+Spoon::Spoon(sf::Vector2u size, float posX, float posY)
 {
 	if (!texture.loadFromFile("sprite/spoon.png"))
 	{
@@ -16,7 +16,7 @@ Spoon::Spoon(sf::Vector2u size, float posX, float posY, float speed)
 
 	originalPosX = posX;
 	originalPosY = posY;
-	this->speed = speed;
+	this->speed = 0;
 }
 
 
@@ -25,8 +25,9 @@ Spoon::~Spoon()
 }
 
 
-void Spoon::Move(sf::Vector2u size)
+void Spoon::Move(sf::Vector2u size, float speed)
 {
+	this->speed = speed;
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > size.x)

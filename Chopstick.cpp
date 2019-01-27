@@ -3,20 +3,19 @@
 
 
 
-Chopstick::Chopstick(sf::Vector2u size, float posX, float posY, float speed)
+Chopstick::Chopstick(sf::Vector2u size, float posX, float posY)
 {
 	if (!texture.loadFromFile("sprite/chopsticks.png"))
 	{
 		std::cout<<"Image Chopstick not found"<<std::endl;
 	}
 	shape.setTexture(&texture);
-	shape.setSize(sf::Vector2f(60, 40));
+	shape.setSize(sf::Vector2f(50, 60));
 	shape.setPosition(sf::Vector2f(posX, posY));
 
 	originalPosX = posX;
 	originalPosY = posY;
-	this->speed = speed;
-
+	this->speed = 0;
 }
 
 
@@ -25,8 +24,9 @@ Chopstick::~Chopstick()
 }
 
 
-void Chopstick::Move(sf::Vector2u size)
+void Chopstick::Move(sf::Vector2u size, float speed)
 {
+	this->speed = speed;
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > size.x)

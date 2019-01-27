@@ -12,6 +12,7 @@ public:
 	void Move(sf::Vector2u size, float speed);
 	int getLife(){ return life; };
 	void setLife(int x){ life = x; };
+	void setPosition(sf::Vector2f position);
 
 
 private:

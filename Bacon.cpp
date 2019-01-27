@@ -3,7 +3,7 @@
 
 
 
-Bacon::Bacon(sf::Vector2u sizeWindow,  sf::Vector2f size,float posX, float posY, float speed)
+Bacon::Bacon(sf::Vector2u sizeWindow,  sf::Vector2f size,float posX, float posY)
 {
 	if (!texture.loadFromFile("sprite/bacon.png"))
 	{
@@ -15,8 +15,7 @@ Bacon::Bacon(sf::Vector2u sizeWindow,  sf::Vector2f size,float posX, float posY,
 
 	originalPosX = posX;
 	originalPosY = posY;
-	this->speed = speed;
-
+	this->speed = 0;
 }
 
 
@@ -25,8 +24,9 @@ Bacon::~Bacon()
 }
 
 
-void Bacon::Move(sf::Vector2u sizeWindow)
+void Bacon::Move(sf::Vector2u sizeWindow, float speed)
 {
+	this->speed = speed;
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > sizeWindow.x)

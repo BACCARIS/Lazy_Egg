@@ -10,8 +10,8 @@ public:
 	~Movable();
 	float getSpeed();
 	void setSpeed(float x);
+	virtual void Move(sf::Vector2u size, float speed) {};
 
 protected :
 	float speed;
-
 };

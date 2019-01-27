@@ -3,9 +3,9 @@
 
 
 
-Toast::Toast(sf::Vector2u sizeWindow, sf::Vector2f size, float posX, float posY, float speed)
+Toast::Toast(sf::Vector2u sizeWindow, sf::Vector2f size, float posX, float posY)
 {
-	if (!texture.loadFromFile("sprite/Toast.png"))
+	if (!texture.loadFromFile("sprite/toast.png"))
 	{
 		std::cout<<"Image Toast not found"<<std::endl;
 	}
@@ -15,8 +15,8 @@ Toast::Toast(sf::Vector2u sizeWindow, sf::Vector2f size, float posX, float posY,
 
 	originalPosX = posX;
 	originalPosY = posY;
+	this->speed = 0;
 
-	this->speed = speed;
 }
 
 
@@ -24,8 +24,9 @@ Toast::~Toast()
 {
 }
 
-void Toast::Move(sf::Vector2u sizeWindow)
+void Toast::Move(sf::Vector2u sizeWindow, float speed)
 {
+	this->speed = speed;
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > sizeWindow.x)

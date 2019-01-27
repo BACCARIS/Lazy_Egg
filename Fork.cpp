@@ -3,7 +3,7 @@
 
 
 
-Fork::Fork(sf::Vector2u size, float posX, float posY, float speed)
+Fork::Fork(sf::Vector2u size, float posX, float posY)
 {
 	if (!texture.loadFromFile("sprite/fork2.png"))
 	{
@@ -16,8 +16,7 @@ Fork::Fork(sf::Vector2u size, float posX, float posY, float speed)
 
 	originalPosX = posX;
 	originalPosY = posY;
-	this->speed = speed;
-
+	this->speed = 0;
 }
 
 
@@ -26,9 +25,9 @@ Fork::~Fork()
 }
 
 
-void Fork::Move(sf::Vector2u size)
+void Fork::Move(sf::Vector2u size, float speed)
 {
-
+	this->speed = speed;
 	shape.move(speed, 0);
 
 	if(speed>0 && shape.getPosition().x > size.x)

@@ -6,10 +6,10 @@
 class Spoon : public Movable
 {
 public:
-	Spoon(sf::Vector2u size, float posX, float posY, float speed);
+	Spoon(sf::Vector2u size, float posX, float posY);
 	~Spoon();
 
-	void Move(sf::Vector2u size);
+	void Move(sf::Vector2u size, float speed);
 
 private:
 	float originalPosX, originalPosY;

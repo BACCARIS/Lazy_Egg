@@ -6,7 +6,7 @@ class Entity
 {
 public:
 	Entity();
-	~Entity();
+	virtual ~Entity();
 
 	void Draw(sf::RenderWindow &window);
 	sf::RectangleShape GetShape();
