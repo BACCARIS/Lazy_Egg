@@ -12,5 +12,4 @@ public:
 
 private:
 	float originalPosX, originalPosY;
-	sf::Texture texture;
 };

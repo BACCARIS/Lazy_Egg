@@ -11,7 +11,6 @@ public:
 
 
 private:
-	sf::Texture texture;
 	int life_count;
 
 };
