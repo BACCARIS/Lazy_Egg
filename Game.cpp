@@ -190,7 +190,7 @@ void Game::GameOver()
 	count_life.setFont(count_life_font);
 	count_life.setString("GAME OVER");
 	count_life.setCharacterSize(50);
-	count_life.setColor(sf::Color::Red);
+	count_life.setFillColor(sf::Color::Red);
 	count_life.setStyle(sf::Text::Bold);
 	count_life.setPosition(400,200);
 
@@ -224,7 +224,7 @@ void Game::Draw()
 	count_life.setFont(count_life_font);
 	count_life.setString("SCORE :");
 	count_life.setCharacterSize(15);
-	count_life.setColor(sf::Color::White);
+	count_life.setFillColor(sf::Color::White);
 	count_life.setStyle(sf::Text::Bold);
 	count_life.setPosition(0,0);
 	window -> draw(count_life);
@@ -416,7 +416,7 @@ void Game::Win()
 	count_life.setFont(count_life_font);
 	count_life.setString("YOU WIN !");
 	count_life.setCharacterSize(50);
-	count_life.setColor(sf::Color::Black);
+	count_life.setFillColor(sf::Color::Black);
 	count_life.setStyle(sf::Text::Bold);
 	count_life.setPosition(400,200);
 
